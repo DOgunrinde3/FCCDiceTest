@@ -1,0 +1,53 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class DiceGameService {
+
+   private int threes;
+   private int numberOfDiceLeft;
+   private List<Integer> currentDiceHand = new ArrayList<>();
+
+
+    public DiceGameService(int numberOfDiceLeft) {
+    this.numberOfDiceLeft = numberOfDiceLeft;
+    }
+
+    public void play(Player player){
+        player.getDices(numberOfDiceLeft);
+        currentDiceHand = player.rollDices();
+        threes = 0;
+        player.setPlayerScore((player.getPlayerScore() + calculateScore()));
+        getRemainingDice(player);
+    }
+
+    private int calculateScore(){
+        Collections.sort(currentDiceHand);
+        if(getThrees()){
+            return 0;
+        }
+        else{
+            return currentDiceHand.get(0);
+        }
+    }
+
+    public boolean getThrees(){
+        threes = (int) currentDiceHand.stream().filter(integer -> integer == 3).count();
+        return threes != 0;
+    }
+
+    private void getRemainingDice(Player player){
+        if(getThrees()){
+            numberOfDiceLeft = (numberOfDiceLeft - threes);
+        }
+
+        else{
+            numberOfDiceLeft = (numberOfDiceLeft - 1);
+        }
+
+    }
+    public int getNumberOfDiceLeft() {
+        return numberOfDiceLeft;
+    }
+
+}
