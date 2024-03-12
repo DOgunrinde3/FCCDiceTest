@@ -18,17 +18,12 @@ public class DiceGameService {
         currentDiceHand = player.rollDices();
         threes = 0;
         player.setPlayerScore((player.getPlayerScore() + calculateScore()));
-        getRemainingDice(player);
+        numberOfDiceLeft =  calculateRemainingDice();
     }
 
     private int calculateScore(){
         Collections.sort(currentDiceHand);
-        if(getThrees()){
-            return 0;
-        }
-        else{
-            return currentDiceHand.get(0);
-        }
+        return getThrees() ? 0 : currentDiceHand.get(0);
     }
 
     public boolean getThrees(){
@@ -36,15 +31,8 @@ public class DiceGameService {
         return threes != 0;
     }
 
-    private void getRemainingDice(Player player){
-        if(getThrees()){
-            numberOfDiceLeft = (numberOfDiceLeft - threes);
-        }
-
-        else{
-            numberOfDiceLeft = (numberOfDiceLeft - 1);
-        }
-
+    private int calculateRemainingDice(){
+        return getThrees() ? (numberOfDiceLeft - threes) : (numberOfDiceLeft - 1);
     }
     public int getNumberOfDiceLeft() {
         return numberOfDiceLeft;
